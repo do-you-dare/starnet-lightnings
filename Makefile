@@ -22,8 +22,8 @@ p_results.txt: pre_process
 	echo "dia, cidade, lat, lon" > p_results.txt
 	ls data/*.gz | parallel ./pre_process >> p_results.txt
 
-most_lightnings.txt: most_lightnings results.txt
-	./most_lightnings results.txt data/todas-cidades-brasil.csv
+most_lightnings.txt: ranking results.txt
+	./ranking results.txt data/todas-cidades-brasil.csv
 
 results.txt: post_process p_results.txt
 	./post_process data/todas-cidades-brasil.csv p_results.txt results.txt
