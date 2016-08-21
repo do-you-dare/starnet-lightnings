@@ -69,11 +69,13 @@ int main(int argc, char *argv[]){
     }
   }
 
-  // FIXME: this should output to files, not std::cout
+	char const *weekdays[] = {"Segunda", "Terça", "Quarta", "Quinta", "Sexta",
+														"Sábado", "Domingo"};
+
+  // FIXME: this should output to a file, not std::cout
   for (int i=0; i < NCITIES; ++i) {
-    std::cout << std::endl;
     for (int d=0; d < 7; ++d) {
-      std::cout << d << ", " << mean[d][i] << ", " << sd[d][i] << std::endl;
+      std::cout << weekdays[d] << ", " << mean[d][i] << ", " << sd[d][i] << std::endl;
     }
   }
 

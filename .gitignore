@@ -1,6 +1,8 @@
 src/*.o
 *.gch
 data/*
+results/
+plots/
 dist_statistics
 distribution
 *.txt
