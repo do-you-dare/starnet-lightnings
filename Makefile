@@ -1,9 +1,13 @@
-all: most_lightnings.txt
 
-pre_process: src/main.o src/lightning.o src/image.o
+all: plots/distribution.pdf
+
+distribution: src/weekly_by_day.o src/lightning.o src/image.o
 	g++ -o $@ $^ -std=c++0x -lz `Magick++-config --ldflags --libs`
 
-src/main.o: src/main.cpp
+dist_statistics: src/distribution_statistics.cpp
+	g++ -o $@ $< -std=c++0x -lpthread
+
+src/weekly_by_day.o: src/weekly_by_day.cpp
 	g++ -o $@ -c `Magick++-config --cxxflags` $^ -std=c++0x
 
 src/lightning.o: src/lightning.cpp
@@ -12,23 +16,22 @@ src/lightning.o: src/lightning.cpp
 src/image.o: src/image.cpp
 	g++ -o $@ -c $^ -std=c++0x `Magick++-config --cxxflags`
 
-post_process: src/city.cpp
-	g++ -g -o $@ $^ -std=c++0x -lpthread
+distribution_data.txt: distribution
+	echo "day, c1, c2, c3, c4" > distribution_data.txt
+	ls data/*.gz | head -n 7 | parallel ./distribution >> distribution_data.txt
 
-ranking: src/most_lightnings.cpp
-	g++ -std=c++0x $^ -o $@ -lpthread
+stat_results.txt: dist_statistics distribution_data.txt results/
+	./$^
 
-p_results.txt: pre_process
-	echo "dia, cidade, lat, lon" > p_results.txt
-	ls data/*.gz | parallel ./pre_process >> p_results.txt
+results/:
+	mkdir $@
 
-most_lightnings.txt: ranking results.txt
-	./ranking results.txt data/todas-cidades-brasil.csv
+plots/distribution.pdf: distribution_data.txt scripts/plot_distribution.R
+	Rscript scripts/plot_distribution.R
 
-results.txt: post_process p_results.txt
-	./post_process data/todas-cidades-brasil.csv p_results.txt results.txt
-	sed -i '1s/^/dia, cidade, raios, dist\n/g' results.txt
+compile: distribution dist_statistics
 
 clean:
-	 rm -rf src/*.o src/*.gch
+	 rm -rf src/*.o src/*.gch *.txt
+	 rm -f distribution dist_statistics
 

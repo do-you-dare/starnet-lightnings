@@ -15,6 +15,7 @@ class Lightning {
   int get_x();
   int get_y();
   int get_quality();
+  std::string get_date();
 
   private:
   std::string date;

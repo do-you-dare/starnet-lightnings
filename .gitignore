@@ -1,9 +1,6 @@
 src/*.o
 *.gch
 data/*
-pre_process
-post_process
-ranking
-p_results.txt
-results.txt
-most_*.csv
+dist_statistics
+distribution
+*.txt

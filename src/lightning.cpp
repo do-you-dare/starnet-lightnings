@@ -38,6 +38,10 @@ int Lightning::get_quality(){
   return quality;
 }
 
+std::string Lightning::get_date() {
+  return date;
+}
+
 void Lightning::set_code(CityData &city) {
   city_code = city.get_code(x, y);
 }
