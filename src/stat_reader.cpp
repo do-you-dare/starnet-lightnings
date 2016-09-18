@@ -14,11 +14,16 @@
 #include <vector>
 #include <exception>
 
+#include "city.h"
+
 #define NTHREADS 4
 
 using namespace std;
 
 std::mutex mtx;
+
+//char image_file[] = "data/brasil_1km.png";
+//Cities cities(image_file);
 
 // Thread-safe writing to an open file
 void save_to_file(string s, string fn, std::ofstream* f) {
