@@ -27,20 +27,23 @@ void save_to_file(string s, string fn, std::ofstream* f) {
     *f << s;
 }
 
-// TODO: use an array of filenames instead of a single file
-void process_files( char* input, string (*process)(gzFile), std::ofstream* f ) {
-    gzFile file = gzopen(input, "rb");
 
-    if (file == NULL) {
-        std::cout << "Error opening " << input << std::endl;
-        return;
+void process_files( char* input[], int start, int end,
+                    string (*process)(gzFile), std::ofstream* f ) {
+    for (int i = start; i < end; ++i) {
+        gzFile file = gzopen(input[i], "rb");
+
+        if (file == NULL) {
+            std::cout << "Error opening " << input[i] << std::endl;
+            return;
+        }
+
+        string s = (*process)(file);
+
+        save_to_file(s, input[i], f);
     }
-
-    // Calling 
-    string s = (*process)(file);
-
-    save_to_file(s, input, f);
 }
+
 
 // Dummy test function
 std::string test ( gzFile file ) {
@@ -56,6 +59,7 @@ std::string test ( gzFile file ) {
     return "HA";
 }
 
+
 int main(int argc, char* argv[]) {
     std::ofstream out_file;
     out_file.open("out.txt");
@@ -65,21 +69,16 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-
-    // This is for easy testing only; read filenames from argv.
-    char* data[] = {
-        "data/2014-01-01.dat.gz",
-        "data/2014-01-02.dat.gz",
-        "data/2014-01-03.dat.gz",
-        "data/2014-01-04.dat.gz",
-        "data/2014-01-05.dat.gz"
-    };
-
     std::thread threads[NTHREADS];
 
-    // TODO: make subpartitions of arrays with filenames
+    int size = argc - 1;
+    int step = size / NTHREADS;
+
     for (int i = 0; i < NTHREADS; ++i) {
-        threads[i] = std::thread(process_files, data[i + 1], &test, &out_file);
+        int end = (i != NTHREADS - 1)? (i + 1) * step + 1 : argc;
+        //cout << i << " : " << i * step + 1 << "-" << end - 1<< endl;
+        threads[i] = std::thread(process_files, argv, i * step + 1,
+                                 end, &test, &out_file);
     }
 
     for (auto& th : threads) th.join();
@@ -88,3 +87,4 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
