@@ -2,6 +2,8 @@
 
 Cities::Cities(char* fname) {
     img = CImg<int>(fname);
+    width = img.width();
+    height = img.height();
 }
 
 int Cities::get_code(int x, int y) {

@@ -9,6 +9,8 @@ class Cities {
         Cities(char * fname);
 
         int get_code(int x, int y);
+        int width;
+        int height;
 
     private:
         CImg<int> img;
