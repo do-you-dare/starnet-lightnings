@@ -48,6 +48,13 @@ void process_files( char* input[], int start, int end,
     }
 }
 
+// Sakamoto's algorithm
+int day_of_the_week(int y, int m, int d) {
+    static int t[] = {0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
+    y -= m < 3;
+    return (y + y/4 - y/100 + y/400 + t[m-1] + d) % 7;
+}
+
 
 std::string get_dayly_data ( gzFile file, Cities* img ) {
     char line[150];
@@ -68,10 +75,15 @@ std::string get_dayly_data ( gzFile file, Cities* img ) {
         ++cities[lightning.code];
     }
 
+    int week_day = day_of_the_week(stoi(date.substr(0, 4)),  // Year
+                                   stoi(date.substr(5, 2)),  // Month
+                                   stoi(date.substr(8, 2))); // Day
+
     for (auto it = cities.begin(); it != cities.end(); ++it) {
         if (it->second > 10) {
-            result += date + ", " + std::to_string(it->first) +
-                ", " + std::to_string(it->second) + "\n";
+            result += date + ", " + to_string(week_day) + ", " +
+                      std::to_string(it->first) + ", " +
+                      std::to_string(it->second) + "\n";
         }
     }
 
