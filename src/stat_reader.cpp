@@ -69,22 +69,28 @@ std::string get_dayly_data ( gzFile file, Cities* img ) {
         tmp = line;
         Lightning lightning(img, tmp);
         if (lightning.code == 16777215 || lightning.code == -1) { continue; }
+        // Filter city
+        if (lightning.code != 3550308 && lightning.code != 3304557) { continue; }
         if (lightning.quality == 2) { continue; }
         date = lightning.date;
 
         ++cities[lightning.code];
     }
 
-    int week_day = day_of_the_week(stoi(date.substr(0, 4)),  // Year
-                                   stoi(date.substr(5, 2)),  // Month
-                                   stoi(date.substr(8, 2))); // Day
+    if (date.size() != 0) {
+        int week_day = day_of_the_week(stoi(date.substr(0, 4)),  // Year
+                                       stoi(date.substr(5, 2)),  // Month
+                                       stoi(date.substr(8, 2))); // Day
 
-    for (auto it = cities.begin(); it != cities.end(); ++it) {
-        if (it->second > 10) {
-            result += date + ", " + to_string(week_day) + ", " +
-                      std::to_string(it->first) + ", " +
-                      std::to_string(it->second) + "\n";
+        for (auto it = cities.begin(); it != cities.end(); ++it) {
+            if (it->second > 10) {
+                result += date + ", " + to_string(week_day) + ", " +
+                          std::to_string(it->first) + ", " +
+                          std::to_string(it->second) + "\n";
+            }
         }
+    } else {
+        result = "";
     }
 
     return result;
