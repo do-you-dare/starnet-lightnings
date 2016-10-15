@@ -1,0 +1,25 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    backports (3.6.8)
+    byebug (9.0.5)
+    concurrent-ruby (1.0.2)
+    daru (0.1.4.1)
+      backports
+    gnuplotrb (0.3.4)
+      hamster (~> 3.0)
+    hamster (3.0.0)
+      concurrent-ruby (~> 1.0)
+    rake (11.3.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  byebug
+  daru
+  gnuplotrb (~> 0.3.4)
+  rake (~> 11.3)
+
+BUNDLED WITH
+   1.12.5

@@ -1,0 +1,8 @@
+# frozen_string_literal: true
+# A sample Gemfile
+source "https://rubygems.org"
+
+gem 'gnuplotrb', '~> 0.3.4'
+gem 'daru'
+gem 'byebug'
+gem 'rake', '~> 11.3'
