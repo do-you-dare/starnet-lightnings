@@ -2,8 +2,8 @@ src/*.o
 *.gch
 data/*
 results/
-plots/
 dist_statistics
 stat_reader
 distribution
 *.txt
+**.png

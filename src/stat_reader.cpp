@@ -16,7 +16,7 @@
 
 #include "lightning.h"
 
-#define NTHREADS 4
+#define NTHREADS 8
 
 using namespace std;
 
