@@ -5,6 +5,9 @@ all: compile
 stat_reader: src/stat_reader.o src/city.o
 	g++ -g -o $@ -std=c++11 $^ -lz -pthread -lm -lX11
 
+distance: src/distance_distribution.o
+	g++ -g -o $@ -std=c++11 $^ -lz -pthread -lm -lX11
+
 src/%.o: src/%.cpp
 	g++ -g -o $@ -c -std=c++11 $^ -lz -pthread -lm -lX11
 

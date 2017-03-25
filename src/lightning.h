@@ -33,10 +33,9 @@ class Lightning {
         int quality;
         int code;
         bool used;
-
-    private:
         float lat, lon;
 
+    private:
         void format_date(std::string s) {
             date = s.replace(4,2,"/").replace(7,1,"/");
         }
